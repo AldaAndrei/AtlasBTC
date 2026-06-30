@@ -50,4 +50,30 @@ public class Intake extends SubsystemBase {
         intakeMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
     }
+
+
+    void updateIntakeState() {
+        // 1. Get current velocity
+        double currentVel = getCurrentVelocity();
+
+        // 2. Update Controller Setpoint based on state
+        switch (currentIntakeState) {
+            case IDLE:
+                targetVelocity = 0;
+                break;
+            case INTAKE:
+                targetVelocity = 2000;
+                break;
+            case REVERSE:
+                targetVelocity = -2000;
+                break;
+        }
+
+        intakeMotor.setVelocity(targetVelocity);
+    }
+    public void setIntakeState(IntakeState state) {currentIntakeState = state;}
+    public double getCurrentVelocity(){return intakeMotor.getVelocity();}
+    public double getTargetVelocity() {
+        return targetVelocity;
+    }
 }
