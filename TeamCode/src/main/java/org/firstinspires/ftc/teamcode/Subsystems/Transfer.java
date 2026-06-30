@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import static org.firstinspires.ftc.teamcode.Globals.targetVelocity;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -9,11 +11,6 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 @Config
 public class Transfer extends SubsystemBase {
-
-    // --- TUNING VARIABLES (Edit in FTC Dashboard) ---
-    // F (Feedforward): Base power to hold speed. Start small (0.0001 - 0.0005)
-    // P (Proportional): "Snap" power to fix errors.
-
 
     public static double servoPosDown = 0;
     public static double servoPosUp = 0.4;
@@ -31,7 +28,7 @@ public class Transfer extends SubsystemBase {
         IDLE
     }
 
-    private TransferState currentTransferState = TransferState.IDLE;
+    TransferState currentTransferState = TransferState.IDLE;
 
     /**
      * Constructs a new Transfer subsystem.
@@ -49,4 +46,25 @@ public class Transfer extends SubsystemBase {
         TransferMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
     }
+
+    void updateTransferState(){
+        switch (currentTransferState){
+            case IDLE:
+                TransferMotor.setPower(0);
+                break;
+
+            case FORWARD:
+                TransferMotor.setPower(0.9);
+                break;
+
+            case REVERSE:
+                TransferMotor.setPower(-0.9);
+                break;
+        }
+    }
+    public void setTransferState(TransferState TransferState){this.currentTransferState = TransferState;}
+    public void init(){
+        setTransferState(TransferState.IDLE);
+    }
+
 }
