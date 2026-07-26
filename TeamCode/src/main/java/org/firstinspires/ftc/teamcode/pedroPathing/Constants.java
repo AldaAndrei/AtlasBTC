@@ -68,10 +68,10 @@ public class Constants {
             .yVelocity(60.868560550719735);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(6.49)
+            .forwardPodY(-5.2)
             .strafePodX(0)
-            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
-            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD
+            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED
             );
 
     /**
