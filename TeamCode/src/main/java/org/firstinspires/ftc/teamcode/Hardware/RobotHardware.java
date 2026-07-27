@@ -83,31 +83,23 @@ public class RobotHardware {
         if (distance < 35.11) {
             return 920;
         } else if (distance < 45.62) {
-            return (int) (930 + (distance - 35.11) * 4.471931);
+            return (int) (1110);
         } else if (distance < 55.11) {
-            return (int) (977 + (distance - 45.62) * 2.423604);
+            return (int) (1160);
         } else if (distance < 65.21) {
-            return (int) (1000 + (distance - 55.11) * 6.237624);
+            return (int) (1200);
         } else if (distance < 75.26) {
-            return (int) (1063 + (distance - 65.21) * 6.666667);
+            return (int) (1263);
         } else if (distance < 85.09) {
-            return (int) (1130 + (distance - 75.26) * 2.034588);
+            return (int) (1330);
         } else if (distance < 95.88) {
-            return (int) (1150 + (distance - 85.09) * 4.633920);
+            return (int) (1450);
         } else if (distance < 105.11) {
-            return (int) (1200 + (distance - 95.88) * 3.033586);
+            return (int) (1500);
         } else if (distance < 115.02) {
-            return (int) (1228 + (distance - 105.11) * 3.935419);
-        } else if (distance < 127.77) {
-            return (int) (1267 + (distance - 115.02) * 7.843137);
-        } else if (distance < 137.36) {
-            return (int) (1367 + (distance - 127.77) * 4.900938);
-        } else if (distance < 147.37) {
-            return (int) (1414 + (distance - 137.36) * 1.598402);
-        } else if (distance < 155.34) {
-            return (int) (1430 + (distance - 147.37) * 6.148055);
-        } else {
-            return 1504;
+            return (int) (1600);
+        }else {
+            return 1650;
         }
     }
 
@@ -119,7 +111,7 @@ public class RobotHardware {
         return new Pose(144 - 3.5, 144 - 3.5, 0);
     }
     public static Pose RED_RESET_CLOSE() {return new Pose(126,84, 0);}
-    public static Pose BLUE_RESET_CLOSE() {return new Pose(22, 84, Math.PI);}//133 6 colt // 16.5 86
+    public static Pose BLUE_RESET_CLOSE() {return new Pose(25, 84, Math.PI);}//133 6 colt // 16.5 86
     public static Pose RED_RESET_FAR() {return new Pose(77,18.5, 0);}
     public static Pose BLUE_RESET_FAR() {return new Pose(59, 16.5, Math.PI);}//70 18 colt // 16.5 86
     public static Pose RED_RESET_HUMAN() {return new Pose(9,32.5, Math.PI);}

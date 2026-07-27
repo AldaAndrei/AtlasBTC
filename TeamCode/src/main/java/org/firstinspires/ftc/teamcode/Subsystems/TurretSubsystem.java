@@ -36,8 +36,8 @@ public class TurretSubsystem extends SubsystemBase {
 
 
         //angle wrapping custom for mechanical limitation
-        if(targetHeading>Math.toRadians(270)){targetHeading -= 2*Math.PI;}
-        if(targetHeading<Math.toRadians(-90)){targetHeading += 2*Math.PI;}
+        if(targetHeading>Math.toRadians(180)){targetHeading -= 2*Math.PI;}
+        if(targetHeading<Math.toRadians(-180)){targetHeading += 2*Math.PI;}
 
         // pid controller handles antistrangulation byitself (no extra logic needed)
         double mixedError = targetHeading - getTurretHeading();
@@ -47,11 +47,20 @@ public class TurretSubsystem extends SubsystemBase {
         robot.TurretMotor.setPower(power);
 
 
-        double distance = Math.hypot( mixedPose.getX() , mixedPose.getY() );
+        double distance = Math.hypot(RobotHardware.TARGET_GOAL.getX() - mixedPose.getX() , RobotHardware.TARGET_GOAL.getY() - mixedPose.getY());
 
         velocity = RobotHardware.getVelocity(distance);
 
         robot.TurretVelocitySubsystem.setTargetVelocity(velocity + 20);
+
+        if(distance > 70)
+        {
+            robot.TurretAngleServo.setPosition(0.3);
+        }
+        else
+        {
+            robot.TurretAngleServo.setPosition(0.5);
+        }
 
         robot.TurretVelocitySubsystem.update();
     }
