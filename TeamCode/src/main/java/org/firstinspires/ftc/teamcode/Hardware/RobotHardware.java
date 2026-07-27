@@ -79,7 +79,7 @@ public class RobotHardware {
     public static AllianceColor ALLIANCE_COLOR = AllianceColor.BLUE;
     public static StartingPose STARTING_POSE = StartingPose.CLOSE;
 
-    public static int getVelocity(double distance) { //script felics
+    public static double getVelocity(double distance) { //script felics
         if (distance < 35.11) {
             return 920;
         } else if (distance < 45.62) {
@@ -101,6 +101,8 @@ public class RobotHardware {
         }else {
             return 1650;
         }
+        //return Math.pow(distance, 0.4760475) * 188.83;
+        //trage mult prea tare cu formula veche, daca e ori lasam cu lookuptable sau fa testele dinnou ca nu dureaza mmult
     }
 
     //*field related
@@ -159,6 +161,22 @@ public class RobotHardware {
     public void clearBulkCache() {
         for (LynxModule hub : allHubs) {
             hub.clearBulkCache();
+        }
+    }
+    public void updateAlliance(AllianceColor allianceColor){
+        ALLIANCE_COLOR = allianceColor;
+        if (ALLIANCE_COLOR == AllianceColor.BLUE) {
+            TARGET_GOAL = GOAL_POSE_BLUE();
+            ColorChannel.setPosition(blue);
+            ResetPose = BLUE_RESET_CLOSE();
+            ResetFarPose = BLUE_RESET_FAR();
+            ResetHumanPose = BLUE_RESET_HUMAN();
+        } else {
+            TARGET_GOAL = GOAL_POSE_RED();
+            ColorChannel.setPosition(red);
+            ResetPose = RED_RESET_CLOSE();
+            ResetFarPose = RED_RESET_FAR();
+            ResetHumanPose = RED_RESET_HUMAN();
         }
     }
 

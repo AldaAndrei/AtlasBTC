@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 
+import static com.seattlesolvers.solverslib.purepursuit.PurePursuitUtil.angleWrap;
+
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.util.Range;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
@@ -55,11 +57,15 @@ public class TurretSubsystem extends SubsystemBase {
 
         if(distance > 70)
         {
-            robot.TurretAngleServo.setPosition(0.3);
+            robot.TurretAngleServo.setPosition(0.1);
+        }
+        else if(distance>20)
+        {
+            robot.TurretAngleServo.setPosition(0.22);
         }
         else
         {
-            robot.TurretAngleServo.setPosition(0.5);
+            robot.TurretAngleServo.setPosition(0.55);
         }
 
         robot.TurretVelocitySubsystem.update();
@@ -70,13 +76,10 @@ public class TurretSubsystem extends SubsystemBase {
         return (ticks / (TicksPerRev * gearRatio)) * 2 * Math.PI;
     }
 
-    double correctedHeadingDegrees(double heading){
-        if (heading > 0) {
-            heading -= 2 * Math.PI;
-        } else if (heading < -2 * Math.PI) {
-            heading += 2 * Math.PI;
-        }
-        return Math.toDegrees(heading);
+    public boolean isNearSetPoint(){
+        return Math.abs(angleWrap(targetHeading - getTurretHeading()))
+                < Math.toRadians(15);
     }
+
 
 }

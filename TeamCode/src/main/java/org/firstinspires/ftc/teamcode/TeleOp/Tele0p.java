@@ -14,21 +14,29 @@ import com.seattlesolvers.solverslib.command.ConditionalCommand;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.WaitCommand;
+import com.seattlesolvers.solverslib.command.button.Trigger;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
+import com.seattlesolvers.solverslib.geometry.Pose2d;
 import com.seattlesolvers.solverslib.util.MathUtils;
 
 import org.firstinspires.ftc.teamcode.Commands.IntakeMotorCommand;
 import org.firstinspires.ftc.teamcode.Commands.IntakeServoCommand;
 import org.firstinspires.ftc.teamcode.Commands.NimicCommand;
+import org.firstinspires.ftc.teamcode.Commands.RumbleOnBallCommand;
+import org.firstinspires.ftc.teamcode.Commands.Shoot;
+import org.firstinspires.ftc.teamcode.Commands.StopShoot;
 import org.firstinspires.ftc.teamcode.Commands.StopperServoCommand;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.Subsystems.ColorSensor;
 import org.firstinspires.ftc.teamcode.Subsystems.TurretSubsystem;
 
 @Config
 @TeleOp(name = "TeleOp")
 public class Tele0p extends CommandOpMode {
     private final RobotHardware robot = RobotHardware.getInstance();
+    ColorSensor myColorSensor;
+
     public static GamepadEx gamepadEx;
     public static GamepadEx gamepadEx2;
     double frontLeftPower;
@@ -51,28 +59,44 @@ public class Tele0p extends CommandOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         robot.init(hardwareMap, false);
 
+        //*shoot
+        Trigger rightTrigger = new Trigger(() -> gamepad1.right_trigger > 0.1);
+
+        // Left trigger: spool the flywheel (gamepad1 driver's job)
+        rightTrigger.whileActiveOnce(
+                new Shoot()
+        ).whenInactive(
+                new StopShoot()
+        );
+
+        //*intake
         gamepadEx.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-                .whileHeld(new SequentialCommandGroup(
-                        //new IntakeMotorCommand(1),
-                        //new WaitCommand(300),
-                        new StopperServoCommand(RobotHardware.StopperServoOpen)
+                .whileHeld( new SequentialCommandGroup(new IntakeMotorCommand(1),
+                        new IntakeServoCommand(RobotHardware.IntakeServoDown)))
+                .whenReleased( new SequentialCommandGroup(new IntakeMotorCommand(0),
+                        new IntakeServoCommand(RobotHardware.IntakeServoUp)));
 
-                ))
-                .whenReleased(new SequentialCommandGroup(
-                        //new IntakeMotorCommand(0),
-                        new StopperServoCommand(RobotHardware.StopperServoClosed)));
-
+        //*Intake reverse
         gamepadEx.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whileHeld(
-                        new SequentialCommandGroup(new IntakeMotorCommand(1),
-                                new IntakeServoCommand(RobotHardware.IntakeServoDown))
+                        .whileHeld( new SequentialCommandGroup(new IntakeMotorCommand(-1),
+                                new IntakeServoCommand(RobotHardware.IntakeServoDown)))
+                        .whenReleased( new SequentialCommandGroup(new IntakeMotorCommand(0),
+                                new IntakeServoCommand(RobotHardware.IntakeServoUp)));
+
+        //*alliance
+        gamepadEx.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
+                new InstantCommand(() ->  {
+                    robot.updateAlliance(RobotHardware.AllianceColor.BLUE);
+                }
                 )
-                .whenReleased(
-                        new SequentialCommandGroup(new IntakeMotorCommand(0),
-                                new IntakeServoCommand(RobotHardware.IntakeServoUp))
-                );
-
-
+        );
+        //setare manuala alianta rosie
+        gamepadEx.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
+                new InstantCommand(() ->  {
+                    robot.updateAlliance(RobotHardware.AllianceColor.RED);
+                }
+                )
+        );
         gamepadEx.getGamepadButton(GamepadKeys.Button.CROSS)
                 .whenPressed(new SequentialCommandGroup(
                                 new InstantCommand(() -> robot.follower.setPose(RobotHardware.ResetFarPose)),
@@ -137,6 +161,9 @@ public class Tele0p extends CommandOpMode {
 
         gamepadEx2.getGamepadButton(GamepadKeys.Button.CIRCLE)
                 .whenPressed(()-> manualAngle -= Math.toRadians(2));
+
+        RumbleOnBallCommand rumbleCommand = new RumbleOnBallCommand(myColorSensor, gamepad1, gamepad2);
+
 
 
         while(opModeInInit() && !isStopRequested()){
