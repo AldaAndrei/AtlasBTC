@@ -85,24 +85,48 @@ public class RobotHardware {
         } else if (distance < 45.62) {
             return (int) (1110);
         } else if (distance < 55.11) {
-            return (int) (1160);
-        } else if (distance < 65.21) {
             return (int) (1200);
+        } else if (distance < 65.21) {
+            return (int) (1250);
         } else if (distance < 75.26) {
-            return (int) (1263);
+            return (int) (1300);
         } else if (distance < 85.09) {
-            return (int) (1330);
+            return (int) (1360);
         } else if (distance < 95.88) {
-            return (int) (1450);
+            return (int) (1400);
         } else if (distance < 105.11) {
             return (int) (1500);
         } else if (distance < 115.02) {
             return (int) (1600);
-        }else {
-            return 1650;
+        } else if (distance < 130) {
+            return (int) (1700);
+        } else {
+            return 1850;
         }
         //return Math.pow(distance, 0.4760475) * 188.83;
         //trage mult prea tare cu formula veche, daca e ori lasam cu lookuptable sau fa testele dinnou ca nu dureaza mmult
+    }
+
+    public static double getHoodAngle(double distance) {
+        if (distance < 35.11) {
+            return 0.51;
+        } else if (distance < 45.62) {
+            return 0.51;
+        } else if (distance < 55.11) {
+            return 0.51;
+        } else if (distance < 65.21) {
+            return 0.28;
+        } else if (distance < 75.26) {
+            return 0.28;
+        } else if (distance < 85.09) {
+            return 0.25;
+        } else if (distance < 95.88) {
+            return 0.20;
+        } else if (distance < 130) {
+            return 0.15;
+        } else {
+            return 0.08;
+        }
     }
 
     //*field related
@@ -193,7 +217,7 @@ public class RobotHardware {
 
         TurretMotor = hardwareMap.get(DcMotorEx.class,"TurretMotor");
         TurretMotor.setDirection(DcMotorEx.Direction.REVERSE);
-//        if(isAuto)
+        if(isAuto)
         {
             TurretMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }

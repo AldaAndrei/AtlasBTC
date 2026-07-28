@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import static com.seattlesolvers.solverslib.purepursuit.PurePursuitUtil.angleWrap;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.util.Range;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
@@ -10,6 +11,7 @@ import com.seattlesolvers.solverslib.controller.PIDFController;
 
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 
+@Config
 public class TurretSubsystem extends SubsystemBase {
     private RobotHardware robot = RobotHardware.getInstance();
 
@@ -17,6 +19,9 @@ public class TurretSubsystem extends SubsystemBase {
     double power;
     double gearRatio = 5.75;
     double TicksPerRev = 145.6;
+    public static boolean hasmap = false;
+    public static double manualHoodAngle = 0;
+    public static double manualVelocity = 0;
 
     double velocity;
 
@@ -51,23 +56,19 @@ public class TurretSubsystem extends SubsystemBase {
 
         double distance = Math.hypot(RobotHardware.TARGET_GOAL.getX() - mixedPose.getX() , RobotHardware.TARGET_GOAL.getY() - mixedPose.getY());
 
-        velocity = RobotHardware.getVelocity(distance);
-
-        robot.TurretVelocitySubsystem.setTargetVelocity(velocity + 20);
-
-        if(distance > 70)
+        if(!hasmap)
         {
-            robot.TurretAngleServo.setPosition(0.1);
-        }
-        else if(distance>20)
-        {
-            robot.TurretAngleServo.setPosition(0.22);
+            velocity = RobotHardware.getVelocity(distance);
+
+            robot.TurretVelocitySubsystem.setTargetVelocity(velocity + 20);
+
+            robot.TurretAngleServo.setPosition(RobotHardware.getHoodAngle(distance));
         }
         else
         {
-            robot.TurretAngleServo.setPosition(0.55);
+            robot.TurretAngleServo.setPosition(manualHoodAngle);
+            robot.TurretVelocitySubsystem.setTargetVelocity(manualVelocity);
         }
-
         robot.TurretVelocitySubsystem.update();
     }
     public double getTurretHeading() {
