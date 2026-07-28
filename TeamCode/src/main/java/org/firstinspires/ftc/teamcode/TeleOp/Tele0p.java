@@ -35,7 +35,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.TurretSubsystem;
 @TeleOp(name = "TeleOp")
 public class Tele0p extends CommandOpMode {
     private final RobotHardware robot = RobotHardware.getInstance();
-    ColorSensor myColorSensor;
 
     public static GamepadEx gamepadEx;
     public static GamepadEx gamepadEx2;
@@ -162,7 +161,7 @@ public class Tele0p extends CommandOpMode {
         gamepadEx2.getGamepadButton(GamepadKeys.Button.CIRCLE)
                 .whenPressed(()-> manualAngle -= Math.toRadians(2));
 
-        RumbleOnBallCommand rumbleCommand = new RumbleOnBallCommand(myColorSensor, gamepad1, gamepad2);
+        RumbleOnBallCommand rumbleCommand = new RumbleOnBallCommand(robot.ColorSensor, gamepad1, gamepad2);
 
 
 
@@ -216,6 +215,9 @@ public class Tele0p extends CommandOpMode {
         telemetry.addData("manual velocity", manualVelocity);
         telemetry.addData("velocity", robot.TurretVelocitySubsystem.getVelocity());
         telemetry.addData("Targetvelocity", robot.TurretVelocitySubsystem.getTargetVelocity());
+        telemetry.addData("turret heading", robot.Turret.getTurretHeading());
+        telemetry.addData("Targetheading", robot.Turret.getTurretTargetHeading());
+        telemetry.addData("lastAutoPose", RobotHardware.lastAutoPose);
         //telemetry.addData("isShootingFar: ", isShootingFar);
 //        telemetry.addData("robot heading: ", robot.follower.getHeading());
 //        telemetry.addData("desired heading: ", RobotHardware.desiredHeading);

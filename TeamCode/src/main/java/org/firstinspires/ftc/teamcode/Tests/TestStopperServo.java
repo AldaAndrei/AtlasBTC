@@ -14,14 +14,12 @@ public class TestStopperServo extends LinearOpMode {
     double pozitie = RobotHardware.StopperServoOpen;
 
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() {
         StopperServo = hardwareMap.get(Servo.class, "StopperServo");
         StopperServo2 = hardwareMap.get(Servo.class, "StopperServo2");
 
         waitForStart();
-        while (opModeIsActive())
-        {
+        while (opModeIsActive()) {
             pozitie += 0.0005 * gamepad1.right_stick_y;
             pozitie = Range.clip(pozitie, 0, 1);
             StopperServo.setPosition(pozitie);

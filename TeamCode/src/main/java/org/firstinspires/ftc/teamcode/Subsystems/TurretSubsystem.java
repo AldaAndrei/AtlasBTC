@@ -66,6 +66,7 @@ public class TurretSubsystem extends SubsystemBase {
         }
         else
         {
+
             robot.TurretAngleServo.setPosition(manualHoodAngle);
             robot.TurretVelocitySubsystem.setTargetVelocity(manualVelocity);
         }
@@ -75,6 +76,10 @@ public class TurretSubsystem extends SubsystemBase {
         double ticks = robot.TurretMotor.getCurrentPosition();
         // Formula: (Ticks / Total_Ticks_Per_Rev) * 2PI
         return (ticks / (TicksPerRev * gearRatio)) * 2 * Math.PI;
+    }
+
+    public double getTurretTargetHeading() {
+        return targetHeading;
     }
 
     public boolean isNearSetPoint(){

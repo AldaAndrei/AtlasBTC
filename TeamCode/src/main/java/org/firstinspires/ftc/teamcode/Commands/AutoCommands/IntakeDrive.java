@@ -31,7 +31,7 @@ public class IntakeDrive extends SequentialCommandGroup {
                 new FollowPathCommand(follower, path, maxSpeed).alongWith(
                         new IntakeMotorCommand(1)
                 ),
-                new SavePose(follower.getPose()),
+                new SavePose(follower),
                 new WaitCommand(waitTime).raceWith(new CheckLoadCommand(colorSensor)),
                 new IntakeMotorCommand(-1),
                 new WaitCommand(20),
@@ -51,7 +51,7 @@ public class IntakeDrive extends SequentialCommandGroup {
                 new FollowPathCommand(follower, path).alongWith(
                         new IntakeMotorCommand(1)
                 ),
-                new SavePose(follower.getPose()),
+                new SavePose(follower),
                 new WaitCommand(waitTime),
                 new IntakeMotorCommand(-1),
                 new WaitCommand(20),

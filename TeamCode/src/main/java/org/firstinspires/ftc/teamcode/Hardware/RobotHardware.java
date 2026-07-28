@@ -15,6 +15,7 @@ import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Subsystems.ColorSensor;
 import org.firstinspires.ftc.teamcode.Subsystems.TurretSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.TurretVelocitySubsystem;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
@@ -29,6 +30,7 @@ public class RobotHardware {
 
     public TurretSubsystem Turret;
     public TurretVelocitySubsystem TurretVelocitySubsystem;
+    public ColorSensor ColorSensor;
 
 
 
@@ -152,6 +154,7 @@ public class RobotHardware {
     }
     public static Pose TARGET_GOAL = new Pose(0, 144, 0);
     public static Pose END_POSE = new Pose(33, 138, Math.toRadians(180)); //BLUE
+    public static Pose lastAutoPose;
     public static Pose ResetPose;
     public static Pose ResetFarPose;
     public static Pose ResetHumanPose;
@@ -263,6 +266,7 @@ public class RobotHardware {
 
         Turret = new TurretSubsystem();
         TurretVelocitySubsystem = new TurretVelocitySubsystem();
+        ColorSensor = new ColorSensor(hardwareMap, "color_sensor");
 
         turretController = new PIDFController(P, I, D, F);
 
@@ -284,7 +288,7 @@ public class RobotHardware {
             for (LynxModule module : allHubs) {
                 module.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
             }
-            follower.setStartingPose(new Pose(END_POSE.getX(), END_POSE.getY(), END_POSE.getHeading()));
+            follower.setStartingPose(lastAutoPose);
         }
 
     }

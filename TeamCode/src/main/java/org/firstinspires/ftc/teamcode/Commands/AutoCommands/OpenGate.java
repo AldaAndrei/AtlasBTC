@@ -21,7 +21,7 @@ public class OpenGate extends SequentialCommandGroup {
                         new IntakeServoCommand(RobotHardware.IntakeServoDown),
                         new IntakeMotorCommand(0)
                 ),
-                new WaitCommand(500),
+                new WaitCommand(200),
                 new IntakeServoCommand(RobotHardware.IntakeServoUp)
         );
     }

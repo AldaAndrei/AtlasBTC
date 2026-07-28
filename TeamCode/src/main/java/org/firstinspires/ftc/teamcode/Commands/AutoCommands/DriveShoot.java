@@ -25,7 +25,7 @@ public class DriveShoot extends SequentialCommandGroup {
     public DriveShoot(Follower follower, PathChain path, long waitBeforeStop){
         addCommands(
                 new FollowPathCommand(follower, path),
-                new SavePose(follower.getPose()),
+                new SavePose(follower),
                 new WaitCommand(400),
                 new Shoot(),
                 new WaitCommand(waitBeforeStop),
@@ -45,7 +45,7 @@ public class DriveShoot extends SequentialCommandGroup {
     public DriveShoot(Follower follower, double maxSpeed, PathChain path, long waitBeforeStop){
         addCommands(
                 new FollowPathCommand(follower, path, maxSpeed),
-                new SavePose(follower.getPose()),
+                new SavePose(follower),
                 new WaitCommand(200),
                 new Shoot(),
                 new WaitCommand(waitBeforeStop),
