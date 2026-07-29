@@ -11,26 +11,27 @@ import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
-import org.firstinspires.ftc.teamcode.Commands.AutoCommands.*;
+import org.firstinspires.ftc.teamcode.Commands.AutoCommands.DriveShoot;
+import org.firstinspires.ftc.teamcode.Commands.AutoCommands.IntakeDrive;
+import org.firstinspires.ftc.teamcode.Commands.AutoCommands.OpenGate;
 import org.firstinspires.ftc.teamcode.Commands.SavePose;
-import org.firstinspires.ftc.teamcode.Commands.StopperServoCommand;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 
-@Autonomous(group = "redclose", name = "red close no gate test")
-public class RedCloseNoGate extends CommandOpMode {
+@Autonomous(group = "blueclose", name = "blue close")
+public class BlueClose extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
 
     // Define Poses cleanly at the top level
-    private final Pose startPose = new Pose(117, 126.534, Math.toRadians(0));
-    private final Pose shooting_pose = new Pose(88.000, 84.000, Math.toRadians(0));
-    private final Pose gate = new Pose(127, 72.66, Math.toRadians(0));
-    private final Pose spike1 = new Pose(123.000, 84.000, Math.toRadians(0));
-    private final Pose spike2 = new Pose(121.000, 58.000, Math.toRadians(0));
-    private final Pose spike3 = new Pose(121.000, 35.000, Math.toRadians(0));
-    private final Pose exit_zone = new Pose(112.854, 82.732, Math.toRadians(0));
+    private final Pose startPose = new Pose(117, 126.534, Math.toRadians(180));
+    private final Pose shooting_pose = new Pose(88.000, 84.000, Math.toRadians(180));
+    private final Pose gate = new Pose(127, 72.66, Math.toRadians(180));
+    private final Pose spike1 = new Pose(123.000, 84.000, Math.toRadians(180));
+    private final Pose spike2 = new Pose(121.000, 58.000, Math.toRadians(180));
+    private final Pose spike3 = new Pose(121.000, 35.000, Math.toRadians(180));
+    private final Pose exit_zone = new Pose(112.854, 82.732, Math.toRadians(180));
 
     // Control Points for Curves
     private final Pose ctrl_spike1 = new Pose(71.000, 55.000);
@@ -42,55 +43,55 @@ public class RedCloseNoGate extends CommandOpMode {
     public void buildPaths() {
         // Path 1
         shoot_preload = robot.follower.pathBuilder()
-                .addPath(new BezierLine(startPose, shooting_pose))
-                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .addPath(new BezierLine(startPose.mirror(), shooting_pose.mirror()))
+                .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
         // Path 2
         pickup_spike1 = robot.follower.pathBuilder()
-                .addPath(new BezierLine(shooting_pose, spike1))
-                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .addPath(new BezierLine(shooting_pose.mirror(), spike1.mirror()))
+                .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
         open_gate1 = robot.follower.pathBuilder()
-                .addPath(new BezierLine(spike1, gate))
-                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .addPath(new BezierLine(spike1.mirror(), gate.mirror()))
+                .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
         // Path 3
         shoot_spike1 = robot.follower.pathBuilder()
-                .addPath(new BezierLine(gate, shooting_pose))
-                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .addPath(new BezierLine(gate.mirror(), shooting_pose.mirror()))
+                .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
         // Path 4
         pickup_spike2 = robot.follower.pathBuilder()
-                .addPath(new BezierCurve(shooting_pose, ctrl_spike2, spike2))
-                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .addPath(new BezierCurve(shooting_pose.mirror(), ctrl_spike2.mirror(), spike2.mirror()))
+                .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
         // Path 5
         shoot_spike2 = robot.follower.pathBuilder()
-                .addPath(new BezierLine(spike2, shooting_pose))
-                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .addPath(new BezierLine(spike2.mirror(), shooting_pose.mirror()))
+                .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
         // Path 6
         pickup_spike3 = robot.follower.pathBuilder()
-                .addPath(new BezierCurve(shooting_pose, ctrl_spike3, spike3))
-                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .addPath(new BezierCurve(shooting_pose.mirror(), ctrl_spike3.mirror(), spike3.mirror()))
+                .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
         // Path 7
         shoot_spike3 = robot.follower.pathBuilder()
-                .addPath(new BezierLine(spike3, shooting_pose))
-                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .addPath(new BezierLine(spike3.mirror(), shooting_pose.mirror()))
+                .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
 
         // Path 8
         leave_zone = robot.follower.pathBuilder()
-                .addPath(new BezierLine(shooting_pose, exit_zone))
-                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .addPath(new BezierLine(shooting_pose.mirror(), exit_zone.mirror()))
+                .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
     }
 
@@ -98,12 +99,12 @@ public class RedCloseNoGate extends CommandOpMode {
     public void initialize() {
         super.reset();
         robot.init(hardwareMap, true);
-        robot.updateAlliance(RobotHardware.AllianceColor.RED);
+        robot.updateAlliance(RobotHardware.AllianceColor.BLUE);
 
 
         // Initialize Follower via your updated Constants
         robot.follower = Constants.createFollower(hardwareMap);
-        robot.follower.setStartingPose(startPose);
+        robot.follower.setStartingPose(startPose.mirror());
         robot.StopperServo.setPosition(RobotHardware.StopperServoClosed);
         robot.StopperServo2.setPosition(RobotHardware.StopperServoClosed);
         RobotHardware.lastAutoPose = robot.follower.getPose();

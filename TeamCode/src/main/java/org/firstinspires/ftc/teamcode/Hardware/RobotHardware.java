@@ -61,7 +61,7 @@ public class RobotHardware {
     public DcMotorEx IntakeMotor;
     public static double IntakeServoInit = 0.1;
     public static double IntakeServoUp = 0.1;
-    public static double IntakeServoDown = 0.43;
+    public static double IntakeServoDown = 0.25;
 
     //*pid
     public com.seattlesolvers.solverslib.controller.PIDFController turretController;

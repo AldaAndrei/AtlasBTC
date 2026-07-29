@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 
-@Autonomous(group = "bluedclose", name = "blue0 close no gate test")
+@Autonomous(group = "blueclose", name = "blue close no gate test")
 public class BlueCloseNoGate extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
@@ -106,6 +106,7 @@ public class BlueCloseNoGate extends CommandOpMode {
         robot.follower.setStartingPose(startPose.mirror());
         robot.StopperServo.setPosition(RobotHardware.StopperServoClosed);
         robot.StopperServo2.setPosition(RobotHardware.StopperServoClosed);
+        RobotHardware.lastAutoPose = robot.follower.getPose();
 
         buildPaths();
 
